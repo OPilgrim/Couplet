@@ -1,38 +1,34 @@
+# 获取数据集
 import pymysql
-import traceback
 import os
 import logging
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-logger.info(" connect with Mysql......")
+couplet_path = '/root/Couplet/couplet/temp/'
+
+logger.info(" get train data from Mysql......")
+logger.info(" get connected with Mysql...")
 db = pymysql.connect(host='139.9.113.51', port=3306, user='chatbot', password='chatbot', db='chatbot', charset='utf8')
 cursor = db.cursor()
 
-try:
-    cursor.execute('SELECT * from Corpus')
-    result = cursor.fetchall()
-except:
-    info = sys.exc_info()
-    logger.info(info[0], ':', info[1])
-    db.rollback()
-finally:
-    cursor.close()
-    conn.close()
-logger.info(" close Mysql.")
-'''
-couplet_path = '/root/Couplet/couplet/temp/'
 couplet_ups = list()
 couplet_downs = list()
 
-for value in result:
-    couplet_ups.append(' '.join([i for i in value[1]])+'\n')
-    couplet_downs.append(' '.join([i for i in value[2]])+'\n')
+cursor.execute('SELECT * from coupletchatbot_corpus')
+fetchall = cursor.fetchall()
+
+for value in fetchall:
+    couplet_ups.append(' '.join([i for i in value[5]])+'\n')
+    couplet_downs.append(' '.join([i for i in value[6]])+'\n')
+
+cursor.close()
+db.close()
 
 with open(os.path.join(couplet_path, 'in.txt'), 'w') as f:
     f.writelines(couplet_ups)
 with open(os.path.join(couplet_path, 'out.txt'), 'w') as f:
     f.writelines(couplet_downs)
-'''
-logger.info(" save train data in {}.".format(couplet_path))
+
+logger.info(" get train data from Mysql.")
