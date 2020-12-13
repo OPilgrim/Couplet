@@ -1,0 +1,8 @@
+nohup: ignoring input
+loading pretrained model from output/Transformer_20.bin
+ * Serving Flask app "webdemo" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+2020-12-11 09:09:34,532 - INFO -  * Running on http://0.0.0.0:5002/ (Press CTRL+C to quit)

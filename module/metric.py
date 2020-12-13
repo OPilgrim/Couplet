@@ -1,3 +1,4 @@
+import os
 from typing import List   # python的类型注解，让人知道该传入什么样的类型参数
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction   # 双语评估替换, 比较候选文本翻译与其他一个或多个参考翻译的评价分数
 
@@ -26,3 +27,8 @@ def calc_rouge_l(cand: List[int or str], ref: List[int or str], beta: float = 1.
     p = lcs * 1.0 / (eps + len_cand)
     f = ((1 + beta**2) * r * p) / (eps + r + beta ** 2 * p)
     return f
+
+def calc_bert_score(cand: str, ref: str):
+    res = os.popen('bert-score --lang zh -r "{0}" -c "{1}" --model bert-base-chinese'.format(ref, cand)).read()
+    res = res.split(' ')
+    return (float(res[2].strip()), float(res[4].strip()), float(res[-1].strip())) # P,R,F1
